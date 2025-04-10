@@ -1,11 +1,14 @@
 package com.example.webbansach_backend.entity;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class DonHang {
     private int maDonHang;
 
-    private Date ngayTao;
+    private Data ngayTao;
 
     private String diaChiMuaHang;
 

@@ -1,5 +1,8 @@
 package com.example.webbansach_backend.entity;
 
+import lombok.Data;
+
+@Data
 public class ChiTietDonHang {
     private long chiTietDonHang;
 
