@@ -13,20 +13,17 @@ public class SachYeuThich {
     private int maSachYeuThich;
 
     @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REFRESH,
-            CascadeType.DETACH
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
     })
     @JoinColumn(name = "ma_nguoi_dung", nullable = false)
     private NguoiDung nguoiDung;
 
     @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REFRESH,
-            CascadeType.DETACH
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
     })
     @JoinColumn(name = "ma_sach", nullable = false)
     private Sach sach;
+
 }

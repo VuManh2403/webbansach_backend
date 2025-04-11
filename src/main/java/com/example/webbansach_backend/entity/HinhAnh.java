@@ -3,6 +3,7 @@ package com.example.webbansach_backend.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.sql.Blob;
 @Entity
 @Data
 @Table(name = "hinh_anh")
@@ -15,7 +16,7 @@ public class HinhAnh {
     @Column(name = "ten_hinh_anh", length = 256)
     private String tenHinhAnh;
 
-    @Column(name = "la_icon")
+    @Column(name = "la_icon") // tiny int
     private boolean laIcon;
 
     @Column(name = "duong_dan")
@@ -25,7 +26,6 @@ public class HinhAnh {
     @Lob
     private String duLieuAnh;
 
-    // xoa di hinh anh nhung ko xoa quyen sach nen ko the de all
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH

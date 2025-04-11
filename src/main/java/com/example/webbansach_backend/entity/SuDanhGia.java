@@ -15,7 +15,7 @@ public class SuDanhGia {
     @Column(name = "diem_xep_hang")
     private float diemXepHang;
 
-    @Column(name = "nhan_xet", columnDefinition = "TEXT")
+    @Column(name = "nhan_xet")
     private String nhanXet;
 
     @ManyToOne(cascade = {
@@ -25,8 +25,10 @@ public class SuDanhGia {
     @JoinColumn(name = "ma_sach", nullable = false)
     private Sach sach;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
+    })
     @JoinColumn(name = "ma_nguoi_dung", nullable = false)
     private NguoiDung nguoiDung;
 }
