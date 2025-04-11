@@ -22,11 +22,14 @@ public class HinhAnh {
     private String duongDan;
 
     @Column(name = "du_lieu_anh")
+    @Lob
     private String duLieuAnh;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {
+    // xoa di hinh anh nhung ko xoa quyen sach nen ko the de all
+    @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH
     })
+    @JoinColumn(name = "ma_sach", nullable = false)
     private Sach sach;
 }

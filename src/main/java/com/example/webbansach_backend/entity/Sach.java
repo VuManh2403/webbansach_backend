@@ -39,6 +39,8 @@ public class Sach {
     @Column(name = "trung_binh_xep_hang")
     private Double trungBinhXepHang;
 
+    // khi xoa 1 quyen sach thi ko the xoa di the loai nen ko the de all
+
     @ManyToMany(fetch = FetchType.LAZY, // lazy chỉ được tải khi bạn gọi đến nó (lazy loading). Tối ưu hiệu năng khi không cần luôn luôn tải kèm dữ liệu liên quan.
             cascade = { // Chỉ định những hành động nào sẽ tự động áp dụng từ Sach sang TheLoai
                     CascadeType.PERSIST, //Khi lưu Sach, tự động lưu TheLoai nếu chưa có
@@ -52,6 +54,8 @@ public class Sach {
             inverseJoinColumns = @JoinColumn(name = "ma_the_loai") // cot dai dien cho entity con lai
     )
     List<TheLoai> danhSachTheLoai;
+
+    // khi xoa di 1 quyen sach thi co the xoa luon hinh anh cua no cx nhu binh luan nen de all
 
     @OneToMany(mappedBy = "sach", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<HinhAnh> danhSachHinhAnh;
