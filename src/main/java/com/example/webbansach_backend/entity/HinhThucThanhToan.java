@@ -12,10 +12,13 @@ public class HinhThucThanhToan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ma_hinh_thuc_thanh_toan")
     private int maHinhThucGiaoHang;
+
     @Column(name = "ten_hinh_thuc_thanh_toan")
     private String tenHinhThucGiaoHang;
+
     @Column(name = "mo_ta")
     private String moTa;
+
     @Column(name = "chi_phi_thanh_toan")
     private double chiPhiGiaoHang;
 

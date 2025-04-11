@@ -11,8 +11,10 @@ public class ChiTietDonHang {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="chi_tiet_don_hang")
     private long chiTietDonHang;
+
     @Column(name="so_luong")
     private int soLuong;
+
     @Column(name="gia_ban")
     private double giaBan;
 
