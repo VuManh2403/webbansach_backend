@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 public class MethodRestConfig implements RepositoryRestConfigurer {
-    private String url = "http://localhost:8080";
+    private String url = "http://localhost:3000";
     @Autowired
     private EntityManager entityManager;
     @Override
@@ -21,9 +21,16 @@ public class MethodRestConfig implements RepositoryRestConfigurer {
 
 
         // expose ids
-        // Cho phép trả về id
+        // Cho phép trả về id tat ca cac phuong thuc
         config.exposeIdsFor(entityManager.getMetamodel().getEntities().stream().map(Type::getJavaType).toArray(Class[]::new));
-        // config.exposeIdsFor(TheLoai.class);
+        // config.exposeIdsFor(TheLoai.class); nguyen the loai
+
+        // cho phep frontend dc truy cap cac phuong thuc
+        // CORS configuration
+        cors.addMapping("/**") // tat ca ca duong dan
+                .allowedOrigins(url)
+                .allowedMethods("GET", "POST", "PUT", "DELETE");
+
 
         // Chặn các methods
         HttpMethod[] chanCacPhuongThuc ={
