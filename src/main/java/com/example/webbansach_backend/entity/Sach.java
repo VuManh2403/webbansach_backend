@@ -18,6 +18,7 @@ public class Sach {
     @Column(name = "ten_tac_gia", length = 512)
     private String tenTacGia;
 
+    //
     @Column(name = "isbn", length = 256)
     private String ISBN;
 
