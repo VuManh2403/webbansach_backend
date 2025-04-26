@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
 
     // kiem tra xem ten dang nhap ton tai hay khong
-    boolean existsByTenDangNhap(String tenDangNhap);
+    public boolean existsByTenDangNhap(String tenDangNhap);
 
     // kiem tra email ton tai hay khong
-    boolean existsByEmail(String email);
+    public boolean existsByEmail(String email);
+
+    public NguoiDung findByTenDangNhap(String tenDangNhap);
 }
     
