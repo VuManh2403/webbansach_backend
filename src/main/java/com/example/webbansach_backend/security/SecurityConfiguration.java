@@ -10,6 +10,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
 
 @Configuration
 public class SecurityConfiguration {
@@ -34,14 +37,21 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
                 config -> config
-                        .requestMatchers(HttpMethod.GET, "/sach").permitAll() // khong can dang nhap co the goi dc
-                        .requestMatchers(HttpMethod.GET, "/sach/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/hinh-anh").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/hinh-anh/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/nguoi-dung").hasAnyAuthority("ADMIN", "STAFF") // quyen admin, staff co the goi dc
-                        .requestMatchers(HttpMethod.GET, "/nguoi-dung/search/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/tai-khoan/dang-ky").permitAll()
+                        .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINS).permitAll()
+                        .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINS).permitAll()
+                        .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_GET_ENDPOINS).hasAuthority("ADMIN")
         );
+
+        // cau hinh cors de frontend goi dc den api
+        http.cors(cors -> {
+            cors.configurationSource(request -> {
+                CorsConfiguration corsConfig = new CorsConfiguration();
+                corsConfig.addAllowedOrigin(Endpoints.front_end_host);
+                corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+                corsConfig.addAllowedHeader("*");
+                return corsConfig;
+            });
+        });
         http.httpBasic(Customizer.withDefaults());
         http.csrf(csrf -> csrf.disable());
         return http.build();
