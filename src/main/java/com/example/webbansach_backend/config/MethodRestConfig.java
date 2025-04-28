@@ -27,25 +27,25 @@ public class MethodRestConfig implements RepositoryRestConfigurer {
 
         // cho phep frontend dc truy cap cac phuong thuc
         // CORS configuration
-        cors.addMapping("/**") // tat ca ca duong dan
-                .allowedOrigins(url)
-                .allowedMethods("GET", "POST", "PUT", "DELETE");
-
-
-        // Chặn các methods
-        HttpMethod[] chanCacPhuongThuc ={
-                HttpMethod.POST,
-                HttpMethod.PUT,
-                HttpMethod.PATCH,
-                HttpMethod.DELETE,
-        };
-        disableHttpMethods(TheLoai.class, config, chanCacPhuongThuc);
-
-        // Chặn các method DELETE
-        HttpMethod[] phuongThucDelete = {
-                HttpMethod.DELETE
-        };
-        disableHttpMethods(NguoiDung.class, config,phuongThucDelete );
+//        cors.addMapping("/**") // tat ca ca duong dan
+//                .allowedOrigins(url)
+//                .allowedMethods("GET", "POST", "PUT", "DELETE");
+//
+//
+//        // Chặn các methods
+//        HttpMethod[] chanCacPhuongThuc ={
+//                HttpMethod.POST,
+//                HttpMethod.PUT,
+//                HttpMethod.PATCH,
+//                HttpMethod.DELETE,
+//        };
+//        disableHttpMethods(TheLoai.class, config, chanCacPhuongThuc);
+//
+//        // Chặn các method DELETE
+//        HttpMethod[] phuongThucDelete = {
+//                HttpMethod.DELETE
+//        };
+//        disableHttpMethods(NguoiDung.class, config,phuongThucDelete );
     }
 
     private void disableHttpMethods(Class c,
