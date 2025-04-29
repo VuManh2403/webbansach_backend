@@ -67,7 +67,8 @@ public class TaiKhoanService {
         emailService.sendMessage("vdm24032002.email@gmail.com", email, subject, text);
     }
 
-    public ResponseEntity<?> kichHoatTaiKHoan(String email, String maKichHoat) {
+    public ResponseEntity<?> kichHoatTaiKhoan(String email, String maKichHoat) {
+        // tim nguoi dung theo dia chi email
         NguoiDung nguoiDung = nguoiDungRepository.findByEmail(email);
 
         if (nguoiDung == null) {
@@ -86,5 +87,6 @@ public class TaiKhoanService {
             return ResponseEntity.badRequest().body(new ThongBao("Mã kích hoạt không chính xác!"));
         }
     }
+
 }
 
