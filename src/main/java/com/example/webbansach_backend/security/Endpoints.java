@@ -14,10 +14,15 @@ public class Endpoints {
 
     public static final String[] PUBLIC_POST_ENDPOINS = {
             "/tai-khoan/dang-ky",
+            "/tai-khoan/dang-nhap",
     };
 
     public static final String[] ADMIN_GET_ENDPOINS = {
             "/nguoi-dung",
             "/nguoi-dung/**",
+    };
+    public static final String[] ADMIN_POST_ENDPOINS = {
+            "/sach/**",
+            "/sach",
     };
 }

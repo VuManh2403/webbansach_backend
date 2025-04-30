@@ -1,34 +1,68 @@
 package com.example.webbansach_backend.controller;
 
 import com.example.webbansach_backend.entity.NguoiDung;
+import com.example.webbansach_backend.security.JwtResponse;
+import com.example.webbansach_backend.security.LoginRequest;
 import com.example.webbansach_backend.service.TaiKhoanService;
+import com.example.webbansach_backend.service.UserService;
+import com.example.webbansach_backend.service.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000") // Allow requests from 'http://localhost:3000'
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/tai-khoan")
 public class TaiKhoanController {
 
     @Autowired
     private TaiKhoanService taiKhoanService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtService jwtService;
+
+    // Allow requests from 'http://localhost:3000'
     @PostMapping("/dang-ky")
     public ResponseEntity<?> dangKyNguoiDung(@Validated @RequestBody NguoiDung nguoiDung){
         ResponseEntity<?> response = taiKhoanService.dangKyNguoiDung(nguoiDung);
         return response;
     }
-    // nhung gi dc them vao csdl phai dung post chu ko dc dung get
 
     @GetMapping("/kich-hoat")
-    // GetMapping de cho nguoi dung kich vao duong link chu ko de dien form nhanh gon hon
-    public ResponseEntity<?> activeAccount(@RequestParam String email, @RequestParam String maKichHoat) {
-        // RequestParam de thong tin tren url
+    public ResponseEntity<?> kichHoatTaiKhoan(@RequestParam String email, @RequestParam String maKichHoat){
         ResponseEntity<?> response = taiKhoanService.kichHoatTaiKhoan(email, maKichHoat);
         return response;
+    }
+
+    @PostMapping("/dang-nhap")
+    public ResponseEntity<?> dangNhap(@RequestBody LoginRequest loginRequest){
+        // Xác thực người dùng bằng tên đăng nhập và mật khẩu
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
+            // Nếu xác thực thành công, tạo token JWT
+            if(authentication.isAuthenticated()){
+                final String jwt = jwtService.generateToken(loginRequest.getUsername());
+                return ResponseEntity.ok(new JwtResponse(jwt));
+            }
+        }catch (AuthenticationException e){
+            // Xác thực không thành công, trả về lỗi hoặc thông báo
+            return ResponseEntity.badRequest().body("Tên đăng nhập hặc mật khẩu không chính xác.");
+        }
+        return ResponseEntity.badRequest().body("Xác thực không thành công.");
     }
 }
 
