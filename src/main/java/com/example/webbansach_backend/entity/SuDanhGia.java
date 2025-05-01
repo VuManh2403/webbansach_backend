@@ -3,6 +3,9 @@ package com.example.webbansach_backend.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 @Entity
 @Data
 @Table(name = "su_danh_gia")
@@ -17,6 +20,9 @@ public class SuDanhGia {
 
     @Column(name = "nhan_xet")
     private String nhanXet;
+
+    @Column(name = "thoi_gian_danh_gia")
+    private Timestamp thoiGianDanhGia;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,

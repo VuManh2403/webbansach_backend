@@ -18,5 +18,8 @@ public interface SachRepository extends JpaRepository<Sach, Integer> {
 
     // ca 2 cai tren
     Page<Sach> findByTenSachContainingAndDanhSachTheLoai_MaTheLoai(@RequestParam("tenSach") String tenSach, @RequestParam("maTheLoai") int maTheLoai, Pageable pageable);
+
+    //  đại diện cho tổng số dòng trong bảng sach
+    long count();
 }
     

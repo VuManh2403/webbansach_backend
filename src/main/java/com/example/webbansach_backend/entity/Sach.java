@@ -18,10 +18,6 @@ public class Sach {
     @Column(name = "ten_tac_gia", length = 512)
     private String tenTacGia;
 
-    //
-    @Column(name = "isbn", length = 256)
-    private String ISBN;
-
     @Column(name = "mo_ta", columnDefinition = "text")
     private String moTa;
 
@@ -36,6 +32,12 @@ public class Sach {
 
     @Column(name="trung_binh_xep_hang")
     private Double trungBinhXepHang;
+
+    @Column(name = "so_luong_ban")
+    private int soLuongBan; // Đã bán bao nhiêu
+
+    @Column(name = "giam_gia")
+    private int giamGia; // Giảm giá bao nhiêu %
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,

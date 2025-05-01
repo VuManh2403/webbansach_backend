@@ -1,4 +1,4 @@
-package com.example.webbansach_backend.service;
+package com.example.webbansach_backend.service.user;
 
 import com.example.webbansach_backend.dao.NguoiDungRepository;
 import com.example.webbansach_backend.dao.QuyenRepository;

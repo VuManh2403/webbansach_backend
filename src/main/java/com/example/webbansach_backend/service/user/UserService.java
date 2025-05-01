@@ -1,4 +1,4 @@
-package com.example.webbansach_backend.service;
+package com.example.webbansach_backend.service.user;
 
 import com.example.webbansach_backend.entity.NguoiDung;
 import org.springframework.security.core.userdetails.UserDetailsService;

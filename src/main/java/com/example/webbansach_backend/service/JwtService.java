@@ -1,4 +1,4 @@
-package com.example.webbansach_backend.service.jwt;
+package com.example.webbansach_backend.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -33,7 +33,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(tenDangNhap)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+30*60*1000)) // JWT hết hạn sau 30 phút
+                .setExpiration(new Date(System.currentTimeMillis()+24*60*60*1000)) // JWT hết hạn sau 1 ngay
                 .signWith(SignatureAlgorithm.HS256,getSigneKey())
                 .compact();
     }

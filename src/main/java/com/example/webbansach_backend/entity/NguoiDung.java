@@ -47,6 +47,9 @@ public class NguoiDung {
     @Column(name = "ma_kich_hoat")
     private  String maKichHoat;
 
+    @Column(name = "anh_dai_dien")
+    private String anhDaiDien;
+
     @OneToMany(mappedBy = "nguoiDung",fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH
@@ -202,6 +205,14 @@ public class NguoiDung {
 
     public void setMaKichHoat(String maKichHoat) {
         this.maKichHoat = maKichHoat;
+    }
+
+    public String getAnhDaiDien() {
+        return anhDaiDien;
+    }
+
+    public void setAnhDaiDien(String anhDaiDien) {
+        this.anhDaiDien = anhDaiDien;
     }
 
     @Override
