@@ -11,5 +11,5 @@ public interface NguoiDungService {
     public ResponseEntity<?> thayDoiMatKhau(JsonNode nguoiDungJson);
     public ResponseEntity<?> thayDoiAvatar(JsonNode nguoiDungJson);
     public ResponseEntity<?> capNhapProfile(JsonNode nguoiDungJson);
-    public ResponseEntity<?> quyenMatKhau(JsonNode nguoiDungJson);
+    public ResponseEntity<?> quyenMatKhau(JsonNode jsonNode);
 }

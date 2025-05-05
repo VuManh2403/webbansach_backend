@@ -5,11 +5,14 @@ import com.example.webbansach_backend.dao.QuyenRepository;
 import com.example.webbansach_backend.entity.NguoiDung;
 import com.example.webbansach_backend.entity.Quyen;
 import com.example.webbansach_backend.entity.ThongBao;
+import com.example.webbansach_backend.security.JwtResponse;
+import com.example.webbansach_backend.service.JwtService;
 import com.example.webbansach_backend.service.capnhaphinhanh.CapNhapHinhAnhService;
 import com.example.webbansach_backend.service.email.EmailService;
 import com.example.webbansach_backend.service.util.Base64ToMultipartFileConverter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,6 +39,8 @@ public class NguoiDungServiceImpl implements NguoiDungService {
     private CapNhapHinhAnhService capNhapHinhAnhService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private JwtService jwtService;
 
     private final ObjectMapper objectMapper;
 
@@ -83,6 +88,17 @@ public class NguoiDungServiceImpl implements NguoiDungService {
         text+=("<br/> <a href="+url+">"+url+"</a> ");
 
         emailService.sendMessage("vdm24032002.email@gmail.com", email, subject, text);
+    }
+
+    private void guiEmailQuenMatKhau(String email, String matKhau) {
+        String subject = "Reset mật khẩu";
+        String message = "Mật khẩu tạm thời của bạn là: <strong>" + matKhau + "</strong>";
+        message += "<br/> <span>Vui lòng đăng nhập và đổi lại mật khẩu của bạn</span>";
+        try {
+            emailService.sendMessage("dongph.0502@gmail.com", email, subject, message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ResponseEntity<?> kichHoatTaiKhoan(String email, String maKichHoat) {
@@ -165,32 +181,130 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 
     @Override
     public ResponseEntity<?> xoa(int id) {
-        return null;
+        try{
+            Optional<NguoiDung> nguoiDung = nguoiDungRepository.findById(id);
+            // co ton tai
+            if (nguoiDung.isPresent()) {
+                // lay avatar
+                String imageUrl = nguoiDung.get().getAvatar();
+                // co avatar thi xoa di
+                if (imageUrl != null) {
+                    capNhapHinhAnhService.xoaAnh(imageUrl);
+                }
+                // xoa nguoi dung
+                nguoiDungRepository.deleteById(id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok("thành công");
     }
 
     @Override
     public ResponseEntity<?> thayDoiMatKhau(JsonNode nguoiDungJson) {
-        return null;
+        try{
+            int idUser = Integer.parseInt(dinhDangChuoiByJson(String.valueOf(nguoiDungJson.get("maNguoiDung"))));
+            String newPassword = dinhDangChuoiByJson(String.valueOf(nguoiDungJson.get("matKhauMoi")));
+            System.out.println(idUser);
+            System.out.println(newPassword);
+            Optional<NguoiDung> user = nguoiDungRepository.findById(idUser);
+            user.get().setMatKhau(passwordEncoder.encode(newPassword));
+            nguoiDungRepository.save(user.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<?> thayDoiAvatar(JsonNode nguoiDungJson) {
-        return null;
+        try{
+            int idUser = Integer.parseInt(dinhDangChuoiByJson(String.valueOf(nguoiDungJson.get("maNguoiDung"))));
+            String dataAvatar = dinhDangChuoiByJson(String.valueOf(nguoiDungJson.get("avatar")));
+
+            Optional<NguoiDung> user = nguoiDungRepository.findById(idUser);
+
+            // Xoá đi ảnh trước đó trong cloudinary
+            if (user.get().getAvatar().length() > 0) {
+                capNhapHinhAnhService.xoaAnh(user.get().getAvatar());
+            }
+
+            if (Base64ToMultipartFileConverter.isBase64(dataAvatar)) {
+                MultipartFile avatarFile = Base64ToMultipartFileConverter.convert(dataAvatar);
+                String avatarUrl = capNhapHinhAnhService.capNhapHinhAnh(avatarFile, "User_" + idUser);
+                user.get().setAvatar(avatarUrl);
+            }
+
+            NguoiDung newUser =  nguoiDungRepository.save(user.get());
+            final String jwtToken = jwtService.generateToken(newUser.getTenDangNhap());
+            return ResponseEntity.ok(new JwtResponse(jwtToken));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<?> capNhapProfile(JsonNode nguoiDungJson) {
-        return null;
+        try{
+            NguoiDung userRequest = objectMapper.treeToValue(nguoiDungJson, NguoiDung.class);
+            Optional<NguoiDung> user = nguoiDungRepository.findById(userRequest.getMaNguoiDung());
+
+            user.get().setHoDem(userRequest.getHoDem());
+            user.get().setTen(userRequest.getTen());
+//            // Format lại ngày sinh
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+//            Instant instant = Instant.from(formatter.parse(formatStringByJson(String.valueOf(userJson.get("dateOfBirth")))));
+//            java.sql.Date dateOfBirth = new java.sql.Date(Date.from(instant).getTime());
+
+//            user.get().setDateOfBirth(dateOfBirth);
+            user.get().setSoDienThoai(userRequest.getSoDienThoai());
+            user.get().setDiaChiGiaoHang(userRequest.getDiaChiGiaoHang());
+            user.get().setGioiTinh(userRequest.getGioiTinh());
+
+            nguoiDungRepository.save(user.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<?> quyenMatKhau(JsonNode nguoiDungJson) {
-        return null;
+    public ResponseEntity<?> quyenMatKhau(JsonNode jsonNode) {
+        try{
+            NguoiDung nguoiDung = nguoiDungRepository.findByEmail(dinhDangChuoiByJson(jsonNode.get("email").toString()));
+
+            if (nguoiDung == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Đổi mật khẩu cho user
+            String passwordTemp = taoMatKhauTamThoi();
+            nguoiDung.setMatKhau(passwordEncoder.encode(passwordTemp));
+            nguoiDungRepository.save(nguoiDung);
+
+            // Gửi email đê nhận mật khẩu
+            guiEmailQuenMatKhau(nguoiDung.getEmail(), passwordTemp);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
 
     private String dinhDangChuoiByJson(String json) {
         return json.replaceAll("\"", "");
+    }
+
+    private String taoMatKhauTamThoi() {
+        return RandomStringUtils.random(10, true, true);
     }
 }
 
