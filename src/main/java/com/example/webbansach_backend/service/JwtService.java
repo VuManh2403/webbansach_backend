@@ -1,10 +1,14 @@
 package com.example.webbansach_backend.service;
 
+import com.example.webbansach_backend.entity.NguoiDung;
+import com.example.webbansach_backend.entity.Quyen;
+import com.example.webbansach_backend.service.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -12,18 +16,43 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class JwtService {
     public static final String SERECT = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
-
+    @Autowired
+    private UserService userService;
 
     // Tạo JWT dựa trên tên đang nhập
+    // kiem tra quyen cua nguoi dung de di den trang admin hay trang chu
     public String generateToken(String tenDangNhap){
         Map<String, Object> claims = new HashMap<>();
-        claims.put("isAdmin", true);
-        claims.put("x", "ABC");
+        NguoiDung nguoiDung = userService.findByUsername(tenDangNhap);
+
+        boolean isAdmin = false;
+        boolean isStaff = false;
+        boolean isCustomer = false;
+        if (nguoiDung!=null && nguoiDung.getDanhSachQuyen().size()>0){
+            List<Quyen> list =  nguoiDung.getDanhSachQuyen();
+            for (Quyen q: list) {
+                if(q.getTenQuyen().equals("ADMIN")){
+                    isAdmin = true;
+                }
+                if(q.getTenQuyen().equals("STAFF")){
+                    isStaff = true;
+                }
+                if(q.getTenQuyen().equals("CUSTOMER")){
+                    isCustomer = true;
+                }
+            }
+        }
+
+        claims.put("isAdmin", isAdmin);
+        claims.put("isStaff", isStaff);
+        claims.put("isCustomer", isCustomer);
+
         return createToken(claims, tenDangNhap);
     }
 

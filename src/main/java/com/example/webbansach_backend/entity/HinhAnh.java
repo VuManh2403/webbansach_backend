@@ -17,8 +17,8 @@ public class HinhAnh {
     @Column(name = "ten_hinh_anh")
     private String tenHinhAnh;
 
-    @Column(name = "anh_thu_nho")
-    private boolean anhThuNho;
+    @Column(name = "is_thumbnail")
+    private boolean isThumbnail; // Có phải là thumbnail không
 
     @Column(name = "duong_dan")
     private String duongDan;

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @RepositoryRestResource(path = "su-danh-gia")
 public interface SuDanhGiaRepository extends JpaRepository<SuDanhGia, Long> {
-    
+    long countBy();
 }
     
