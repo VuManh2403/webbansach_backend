@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(path = "nguoi-dung")
+@RepositoryRestResource(excerptProjection = NguoiDung.class, path = "nguoi-dung")
 public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
 
     // kiem tra xem ten dang nhap ton tai hay khong

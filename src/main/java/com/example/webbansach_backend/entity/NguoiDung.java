@@ -47,8 +47,8 @@ public class NguoiDung {
     @Column(name = "ma_kich_hoat")
     private  String maKichHoat;
 
-    @Column(name = "anh_dai_dien")
-    private String anhDaiDien;
+    @Column(name = "avatar")
+    private String avatar;
 
     @OneToMany(mappedBy = "nguoiDung",fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
@@ -207,12 +207,12 @@ public class NguoiDung {
         this.maKichHoat = maKichHoat;
     }
 
-    public String getAnhDaiDien() {
-        return anhDaiDien;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAnhDaiDien(String anhDaiDien) {
-        this.anhDaiDien = anhDaiDien;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

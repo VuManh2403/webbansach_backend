@@ -3,7 +3,7 @@ package com.example.webbansach_backend.controller;
 import com.example.webbansach_backend.entity.NguoiDung;
 import com.example.webbansach_backend.security.JwtResponse;
 import com.example.webbansach_backend.security.LoginRequest;
-import com.example.webbansach_backend.service.TaiKhoanService;
+import com.example.webbansach_backend.service.nguoidung.NguoiDungServiceImpl;
 import com.example.webbansach_backend.service.user.UserService;
 import com.example.webbansach_backend.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import org.springframework.security.core.AuthenticationException;
 public class TaiKhoanController {
 
     @Autowired
-    private TaiKhoanService taiKhoanService;
+    private NguoiDungServiceImpl taiKhoanService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
