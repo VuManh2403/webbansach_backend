@@ -27,33 +27,29 @@ public class JwtService {
 
     // Tạo JWT dựa trên tên đang nhập
     // kiem tra quyen cua nguoi dung de di den trang admin hay trang chu
-    public String generateToken(String tenDangNhap){
+    public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-        NguoiDung nguoiDung = userService.findByUsername(tenDangNhap);
-
-        boolean isAdmin = false;
-        boolean isStaff = false;
-        boolean isCustomer = false;
-        if (nguoiDung!=null && nguoiDung.getDanhSachQuyen().size()>0){
-            List<Quyen> list =  nguoiDung.getDanhSachQuyen();
-            for (Quyen q: list) {
-                if(q.getTenQuyen().equals("ADMIN")){
-                    isAdmin = true;
+        NguoiDung nguoiDung = userService.findByUsername(username);
+        claims.put("maNguoiDung", nguoiDung.getMaNguoiDung());
+        claims.put("avatar", nguoiDung.getAvatar());
+        claims.put("ten", nguoiDung.getTen());
+        claims.put("daKichHoat", nguoiDung.isDaKichHoat());
+        List<Quyen> danhSachQuyen = nguoiDung.getDanhSachQuyen();
+        if (danhSachQuyen.size() > 0) {
+            for (Quyen quyen : danhSachQuyen) {
+                if (quyen.getTenQuyen().equals("ADMIN")) {
+                    claims.put("quyen", "ADMIN");
+                    break;
                 }
-                if(q.getTenQuyen().equals("STAFF")){
-                    isStaff = true;
-                }
-                if(q.getTenQuyen().equals("CUSTOMER")){
-                    isCustomer = true;
+                if (quyen.getTenQuyen().equals("CUSTOMER")) {
+                    claims.put("quyen", "CUSTOMER");
+                    break;
                 }
             }
         }
 
-        claims.put("isAdmin", isAdmin);
-        claims.put("isStaff", isStaff);
-        claims.put("isCustomer", isCustomer);
 
-        return createToken(claims, tenDangNhap);
+        return createToken(claims, username);
     }
 
     // Tạo JWT với các claim đã chọn
@@ -84,7 +80,7 @@ public class JwtService {
         return claimsTFunction.apply(claims);
     }
 
-    // Kiểm tra tời gian hết hạn từ JWT
+    // Kiểm tra thời gian hết hạn từ JWT
     public Date extractExpiration(String token){
         return extractClaim(token, Claims::getExpiration);
     }
