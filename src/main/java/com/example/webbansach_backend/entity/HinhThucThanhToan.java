@@ -11,16 +11,16 @@ public class HinhThucThanhToan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ma_hinh_thuc_thanh_toan")
-    private int maHinhThucGiaoHang;
+    private int maHinhThucThanhToan;
 
     @Column(name = "ten_hinh_thuc_thanh_toan")
-    private String tenHinhThucGiaoHang;
+    private String tenHinhThucThanhToan;
 
     @Column(name = "mo_ta")
     private String moTa;
 
     @Column(name = "chi_phi_thanh_toan")
-    private double chiPhiGiaoHang;
+    private double chiPhiThanhToan;
 
     @OneToMany(mappedBy ="hinhThucThanhToan" ,fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,

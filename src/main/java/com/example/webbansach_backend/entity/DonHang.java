@@ -35,6 +35,11 @@ public class DonHang {
     @Column(name = "tong_tien")
     private double tongTien;
 
+    @Column(name = "trang_thai")
+    private String trangThai;
+    @Column(name = "ghi_chu")
+    private String ghiChu;
+
     @OneToMany(mappedBy = "donHang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ChiTietDonHang> danhSachChiTietDonHang;
 
