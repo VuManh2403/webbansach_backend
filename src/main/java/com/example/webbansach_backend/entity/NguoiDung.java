@@ -77,7 +77,10 @@ public class NguoiDung {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH
     })
-    private List<DonHang> danhSachDonhang;
+    private List<DonHang> danhSachDonHang;
+
+    @OneToMany(mappedBy = "nguoiDung",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<GioHang> danhSachGioHang;
 
     public int getMaNguoiDung() {
         return maNguoiDung;
@@ -183,12 +186,12 @@ public class NguoiDung {
         this.danhSachQuyen = danhSachQuyen;
     }
 
-    public List<DonHang> getDanhSachDonhang() {
-        return danhSachDonhang;
+    public List<DonHang> getDanhSachDonHang() {
+        return danhSachDonHang;
     }
 
-    public void setDanhSachDonhang(List<DonHang> danhSachDonhang) {
-        this.danhSachDonhang = danhSachDonhang;
+    public void setDanhSachDonHang(List<DonHang> danhSachDonHang) {
+        this.danhSachDonHang = danhSachDonHang;
     }
 
     public boolean isDaKichHoat() {
@@ -215,6 +218,14 @@ public class NguoiDung {
         this.avatar = avatar;
     }
 
+    public List<GioHang> getDanhSachGioHang() {
+        return danhSachGioHang;
+    }
+
+    public void setDanhSachGioHang(List<GioHang> danhSachGioHang) {
+        this.danhSachGioHang = danhSachGioHang;
+    }
+
     @Override
     public String toString() {
         return "NguoiDung{" +
@@ -230,10 +241,12 @@ public class NguoiDung {
                 ", diaChiGiaoHang='" + diaChiGiaoHang + '\'' +
                 ", daKichHoat=" + daKichHoat +
                 ", maKichHoat='" + maKichHoat + '\'' +
+                ", avatar='" + avatar + '\'' +
                 ", danhSachSuDanhGia=" + danhSachSuDanhGia +
                 ", danhSachSachYeuThich=" + danhSachSachYeuThich +
                 ", danhSachQuyen=" + danhSachQuyen +
-                ", danhSachDonhang=" + danhSachDonhang +
+                ", danhSachDonHang=" + danhSachDonHang +
+                ", danhSachGioHang=" + danhSachGioHang +
                 '}';
     }
 }

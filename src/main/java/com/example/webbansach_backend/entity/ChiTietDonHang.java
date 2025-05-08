@@ -18,6 +18,9 @@ public class ChiTietDonHang {
     @Column(name="gia_ban")
     private double giaBan;
 
+    @Column(name = "is_review")
+    private boolean isReview;
+
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH
