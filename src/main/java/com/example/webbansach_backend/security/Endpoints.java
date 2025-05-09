@@ -15,14 +15,16 @@ public class Endpoints {
             "/tai-khoan/kich-hoat/**",
             "/gio-hang/**",
             "/nguoi-dung/*/danhSachGioHang",
-//            "/don-hang/**",
-//            "/chi-tiet-don-hang/**",
+            "/don-hang/**",
+            "/chi-tiet-don-hang/**",
             "/nguoi-dung/*/danhSachDonHang",
             "/nguoi-dung/*/danhSachQuyen",
             "/nguoi-dung/*",
             "/nguoi-dung/*/danhSachSachYeuThich",
             "/yeu-thich/lay-sach-yeu-thich/**",
             "/sach-yeu-thich/*/sach",
+            "/don-hang/**",
+            "/chi-tiet-don-hang/**",
     };
 
     public static final String[] PUBLIC_POST = {
@@ -31,6 +33,8 @@ public class Endpoints {
             "/danh-gia/them-danh-gia/**",
             "/danh-gia/lay-danh-gia/**",
             "/yeu-thich/them-sach-yeu-thich",
+            "/chi-tiet-gio-hang/them-gio-hang",
+            "/danh-sach-don-hang/**",
     };
 
     public static final String[] ADMIN_ENDPOINT = {
@@ -43,6 +47,11 @@ public class Endpoints {
             "/tai-khoan/them-nguoi-dung/**",
             "/yeu-thich/**",
             "/sach-yeu-thich/**",
+            "/gio-hang/**",
+            "/chi-tiet-gio-hang/**",
+            "/don-hang/**",
+            "/chi-tiet-don-hang/**",
+            "/danh-sach-don-hang/**",
     };
 
     public static final String[] PUBLIC_PUT = {
@@ -53,9 +62,14 @@ public class Endpoints {
             "/tai-khoan/forgot-password",
             "/tai-khoan/thay-doi-avatar",
             "/user/quen-mat-khau",
+            "/gio-hang/**",
+            "/chi-tiet-gio-hang/**",
+            "/danh-sach-don-hang/cap-nhap-don-hang",
+            "/danh-sach-don-hang/huy-don-hang",
     };
 
     public static final String[] PUBLIC_DELETE = {
             "/yeu-thich/xoa-sach-yeu-thich",
+            "/gio-hang/**",
     };
 }

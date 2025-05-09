@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "gio-hang")
-public interface GioHangrepository extends JpaRepository<GioHang, Integer> {
+public interface GioHangRepository extends JpaRepository<GioHang, Integer> {
     @Modifying
     @Transactional
     @Query("DELETE FROM GioHang c WHERE  c.nguoiDung.maNguoiDung = :maNguoiDung")
