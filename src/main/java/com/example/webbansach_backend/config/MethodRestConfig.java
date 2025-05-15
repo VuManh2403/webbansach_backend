@@ -1,7 +1,5 @@
 package com.example.webbansach_backend.config;
 
-import com.example.webbansach_backend.entity.NguoiDung;
-import com.example.webbansach_backend.entity.TheLoai;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.Type;
 import org.springframework.beans.factory.annotation.Autowired;

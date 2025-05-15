@@ -1,14 +1,11 @@
 package com.example.webbansach_backend.security;
 
-// co the su dung lombok cx nhu lam binh thuong
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class JwtResponse {
-    private final String jwt;
+    private final String jwtToken;
 
-    public JwtResponse(String jwt) {
-        this.jwt = jwt;
-    }
-
-    public String getJwt() {
-        return jwt;
-    }
 }

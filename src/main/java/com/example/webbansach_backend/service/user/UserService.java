@@ -1,10 +1,16 @@
 package com.example.webbansach_backend.service.user;
 
-import com.example.webbansach_backend.entity.NguoiDung;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService extends UserDetailsService {
-    // nhan dien nguoi dung qua ten dang nhap
-    public NguoiDung findByUsername(String tenDangNhap);
+import com.example.webbansach_backend.entity.User;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.http.ResponseEntity;
 
+public interface UserService {
+    public ResponseEntity<?> register(User user);
+    public ResponseEntity<?> save(JsonNode userJson, String option);
+    public ResponseEntity<?> delete(int id);
+    public ResponseEntity<?> changePassword(JsonNode userJson);
+    public ResponseEntity<?> changeAvatar(JsonNode userJson);
+    public ResponseEntity<?> updateProfile(JsonNode userJson);
+    public ResponseEntity<?> forgotPassword(JsonNode jsonNode);
 }

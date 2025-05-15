@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data //  dung lombok get set tu dong
-@AllArgsConstructor // tu tao Constructor
-@NoArgsConstructor // tu tao Constructor rong
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginRequest {
     private String username;
     private String password;
