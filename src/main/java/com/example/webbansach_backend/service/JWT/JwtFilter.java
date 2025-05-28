@@ -22,21 +22,36 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtService jwtService;
     @Autowired
     private UserSecurityService userSecurityService;
+
+    // kiểm tra và xác thực người dùng dựa trên JWT
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         try{
+            // Lấy header "Authorization" từ HTTP request. Đây thường là nơi chứa JWT token.
             String authHeader = request.getHeader("Authorization");
+
             String token = null;
             String username = null;
+
+            // Kiểm tra xem header có tồn tại và có bắt đầu bằng "Bearer " không (chuẩn theo RFC 6750).
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                token = authHeader.substring(7);
-                username = jwtService.extractUsername(token);
+                token = authHeader.substring(7); // Cắt phần "Bearer " ra để chỉ lấy token thực sự.
+                username = jwtService.extractUsername(token); // lay username tu token de xu ly tiep
             }
+
+            // Kiểm tra nếu username hợp lệ và hiện tại chưa có thông tin xác thực nào trong context.
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                //Lấy thông tin người dùng từ hệ thống (thường từ cơ sở dữ liệu).
                 UserDetails userDetails = userSecurityService.loadUserByUsername(username);
+
+                // Kiểm tra token có hợp lệ và đúng với người dùng hay không.
                 if (jwtService.validateToken(token, userDetails)) {
+                    //Tạo đối tượng xác thực từ thông tin người dùng.
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    // Đặt thông tin xác thực vào Spring Security Context, cho phép tiếp tục xử lý như người dùng đã đăng nhập.
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }

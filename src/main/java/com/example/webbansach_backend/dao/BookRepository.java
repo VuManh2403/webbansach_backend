@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RepositoryRestResource(path = "books")
 public interface BookRepository extends JpaRepository<Book, Integer> {
-    Page<Book> findByNameBookContaining(@RequestParam("nameBook") String nameBook, Pageable pageable);
-    Page<Book> findByListGenres_idGenre(@RequestParam("idGenre") int idGenre, Pageable pageable);
-    Page<Book> findByNameBookContainingAndListGenres_idGenre(@RequestParam("nameBook") String nameBook ,@RequestParam("idGenre") int idGenre, Pageable pageable);
+    Page<Book> findByNameBookContaining( String nameBook, Pageable pageable);
+    Page<Book> findByListGenres_idGenre( int idGenre, Pageable pageable);
+    Page<Book> findByNameBookContainingAndListGenres_idGenre( String nameBook , int idGenre, Pageable pageable);
     long count();
 }

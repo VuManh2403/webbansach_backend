@@ -13,5 +13,5 @@ public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
     @Modifying
     @Transactional
     @Query("DELETE FROM CartItem c WHERE  c.user.idUser = :idUser")
-    public void deleteCartItemsByIdUser(@Param("idUser") int idUser);
+    public void deleteCartItemsByIdUser( int idUser);
 }

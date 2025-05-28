@@ -17,5 +17,5 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
     @Modifying
     @Transactional
     @Query("DELETE FROM Image i WHERE i.isThumbnail = false AND i.book.idBook = :bookId")
-    public void deleteImagesWithFalseThumbnailByBookId(@Param("bookId") int bookId);
+    public void deleteImagesWithFalseThumbnailByBookId( int bookId);
 }
