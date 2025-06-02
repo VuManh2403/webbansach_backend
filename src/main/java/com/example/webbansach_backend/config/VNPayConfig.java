@@ -1,6 +1,7 @@
 package com.example.webbansach_backend.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -8,9 +9,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 public class VNPayConfig {
+    @Value("${frontend.url}")
+    public static String frontendUrl;
+
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 //    public static String vnp_ReturnUrl = "http://localhost:8080/vnpay/payment_info";
-    public static String vnp_ReturnUrl = "http://localhost:3000/check-out/status";
+    public static String vnp_ReturnUrl = frontendUrl+"/check-out/status";
     public static String vnp_TmnCode = "TQUUDHUS";
     public static String secretKey = "MQNZJBIHTNQBKTEEUWCSFKEQMXHHAUBG";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";

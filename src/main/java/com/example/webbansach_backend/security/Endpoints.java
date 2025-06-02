@@ -1,8 +1,12 @@
 package com.example.webbansach_backend.security;
 
-public class Endpoints {
+import org.springframework.beans.factory.annotation.Value;
 
-    public static final String font_end_host = "http://localhost:3000";
+public class Endpoints {
+    @Value("${frontend.url}")
+    public static String frontendUrl;
+
+    public static final String font_end_host = frontendUrl;
     public static final String[] PUBLIC_GET = {
             "/books",
             "/books/**",

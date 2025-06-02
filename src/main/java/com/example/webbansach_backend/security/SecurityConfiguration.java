@@ -3,6 +3,7 @@ package com.example.webbansach_backend.security;
 import com.example.webbansach_backend.service.JWT.JwtFilter;
 import com.example.webbansach_backend.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,13 +18,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfiguration {
+
+
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @Autowired
     private JwtFilter jwtFilter;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -31,7 +41,7 @@ public class SecurityConfiguration {
 
     // Khi đăng nhâp thì sẽ vào hàm này đâu tiên để kiểm tra
     @Bean
-    public DaoAuthenticationProvider authenticationProvider (UserSecurityService userSecurityService) {
+    public DaoAuthenticationProvider authenticationProvider(UserSecurityService userSecurityService) {
         DaoAuthenticationProvider dap = new DaoAuthenticationProvider();
         dap.setUserDetailsService(userSecurityService);
         dap.setPasswordEncoder(passwordEncoder());
@@ -42,7 +52,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Cấu hình phân quyền cho endpoint
         http.authorizeHttpRequests(
-                config->config
+                config -> config
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST).permitAll()
                         .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT).permitAll()
@@ -52,16 +62,23 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, Endpoints.ADMIN_ENDPOINT).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, Endpoints.ADMIN_ENDPOINT).hasAuthority("ADMIN")
         );
-        // Cấu hình cors
-        http.cors(cors -> {
-            cors.configurationSource(request -> {
-                CorsConfiguration corsConfig = new CorsConfiguration();
-                corsConfig.addAllowedOrigin("*");
-                corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-                corsConfig.addAllowedHeader("*");
-                return corsConfig;
-            });
-        });
+//        // Cấu hình cors
+//        http.cors(cors -> {
+//            cors.configurationSource(request -> {
+//                CorsConfiguration corsConfig = new CorsConfiguration();
+//                corsConfig.addAllowedOrigin("*");
+//                corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+//                corsConfig.addAllowedHeader("*");
+//                return corsConfig;
+//            });
+//        });
+
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS
+                .csrf(csrf -> csrf.disable()) // Tùy vào dự án, thường sẽ disable CSRF cho REST API
+                .authorizeHttpRequests(authz -> authz
+                        .anyRequest().permitAll() // Cho phép tất cả endpoint (có thể điều chỉnh)
+                );
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -69,6 +86,21 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedOrigins(List.of(frontendUrl)); // Dùng * không được khuyến khích với credentials
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true); // Nếu frontend cần gửi cookie/token
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
     }
 
     @Bean
