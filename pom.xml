@@ -122,6 +122,6 @@
 			</plugin>
 		</plugins>
 		<finalName>book-store-be</finalName>
-	</build>
 
+	</build>
 </project>
