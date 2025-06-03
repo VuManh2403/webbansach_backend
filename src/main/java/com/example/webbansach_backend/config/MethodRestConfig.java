@@ -12,8 +12,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 public class MethodRestConfig implements RepositoryRestConfigurer {
-    @Value("${frontend.url}")
-    private String frontendUrl;
 
     @Autowired
     private EntityManager entityManager;
