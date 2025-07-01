@@ -24,7 +24,7 @@ public class CartItemController {
     }
 
     @PutMapping("/update-item")
-    private ResponseEntity<?> update(@RequestBody JsonNode jsonData) {
+    public ResponseEntity<?> update(@RequestBody JsonNode jsonData) {
         try{
             cartService.update(jsonData);
             return ResponseEntity.ok("success");

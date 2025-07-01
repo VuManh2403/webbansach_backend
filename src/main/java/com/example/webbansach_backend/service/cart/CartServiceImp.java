@@ -6,6 +6,7 @@ import com.example.webbansach_backend.entity.CartItem;
 import com.example.webbansach_backend.entity.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> save(JsonNode jsonData) {
         try{
             int idUser = 0;

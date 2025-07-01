@@ -3,10 +3,7 @@ package com.example.webbansach_backend.security;
 import org.springframework.beans.factory.annotation.Value;
 
 public class Endpoints {
-    @Value("${frontend.url}")
-    public static String frontendUrl;
-
-    public static final String font_end_host = frontendUrl;
+    public static final String font_end_host = "http://localhost:3000";
     public static final String[] PUBLIC_GET = {
             "/books",
             "/books/**",
@@ -52,7 +49,8 @@ public class Endpoints {
             "/user/change-avatar",
             "/order/update-order",
             "/order/cancel-order",
-            "/review/update-review"
+            "/review/update-review",
+            "/cart-item/update-item"
     };
 
     public static final String[] PUBLIC_DELETE = {
