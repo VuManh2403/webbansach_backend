@@ -81,6 +81,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> save(JsonNode userJson, String option) {
         try{
             User user = objectMapper.treeToValue(userJson, User.class);
@@ -137,6 +138,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> delete(int id) {
         try{
             Optional<User> user = userRepository.findById(id);
@@ -158,6 +160,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> changePassword(JsonNode userJson) {
         try{
             int idUser = Integer.parseInt(formatStringByJson(String.valueOf(userJson.get("idUser"))));
@@ -206,6 +209,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> updateProfile(JsonNode userJson) {
         try{
             User userRequest = objectMapper.treeToValue(userJson, User.class);

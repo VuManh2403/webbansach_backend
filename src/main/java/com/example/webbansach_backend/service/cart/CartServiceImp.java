@@ -80,6 +80,7 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> update(JsonNode jsonData) {
         try{
             int idCart = Integer.parseInt(formatStringByJson(String.valueOf(jsonData.get("idCart"))));

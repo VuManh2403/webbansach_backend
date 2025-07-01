@@ -110,6 +110,7 @@ public class OrderServiceImp implements OrderService{
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> cancel(JsonNode jsonData) {
         try{
             int idUser = Integer.parseInt(formatStringByJson(String.valueOf(jsonData.get("idUser"))));
