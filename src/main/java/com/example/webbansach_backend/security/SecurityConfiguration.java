@@ -27,6 +27,8 @@ import java.util.List;
 @Configuration
 public class SecurityConfiguration {
 
+    @Value("${frontend_url}")
+    private String front_end_host;
 
     @Autowired
     private JwtFilter jwtFilter;
@@ -89,7 +91,7 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // Dùng * không được khuyến khích với credentials
+        config.setAllowedOrigins(List.of(front_end_host)); // Dùng * không được khuyến khích với credentials
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // Nếu frontend cần gửi cookie/token
