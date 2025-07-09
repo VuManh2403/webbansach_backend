@@ -45,6 +45,8 @@ public class UserServiceImp implements UserService {
         this.objectMapper = objectMapper;
     }
 
+    @Override
+    @Transactional
     public ResponseEntity<?> register(User user) {
         // Kiểm tra username đã tồn tại chưa
         if (userRepository.existsByUsername(user.getUsername())) {
