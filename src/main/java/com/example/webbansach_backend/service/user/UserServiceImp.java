@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -28,7 +29,7 @@ import java.util.*;
 @Service
 public class UserServiceImp implements UserService {
     @Value("${frontend_url}")
-    public static String font_end_host;
+    private String front_end_host;
     
     @Autowired
     private UserRepository userRepository;
@@ -269,7 +270,7 @@ public class UserServiceImp implements UserService {
     }
 
     private void sendEmailActivation(String email, String activationCode) {
-        String endpointFE = font_end_host;
+        String endpointFE = front_end_host;
         String url = endpointFE + "/active/" + email + "/" + activationCode;
         String subject = "Kích hoạt tài khoản";
         String message = "Cảm ơn bạn đã là thành viên của chúng tôi. Vui lòng kích hoạt tài khoản!: <br/> Mã kích hoạt: <strong>"+ activationCode +"<strong/>";
